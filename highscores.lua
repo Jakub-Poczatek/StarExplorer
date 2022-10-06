@@ -13,6 +13,8 @@ local json = require("json")
 local scoresTable = {}
 local filePath = system.pathForFile("scores.json", system.DocumentsDirectory)
 
+local musicTrack
+
 local function loadScores()
 	local file = io.open(filePath, "r")
 
@@ -91,8 +93,9 @@ function scene:create( event )
 	local menuButton = display.newText(sceneGroup, "Menu", display.contentCenterX, 810, native.systemFont, 44)
 	menuButton:setFillColor(0.75, 0.78, 1)
 	menuButton:addEventListener("tap", gotoMenu)
-end
 
+	musicTrack = audio.loadStream("assets/audio/Escape_Looping.wav")
+end
 
 -- show()
 function scene:show( event )
@@ -105,10 +108,9 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-
+		audio.play(musicTrack, {channel=1, loop=-1})
 	end
 end
-
 
 -- hide()
 function scene:hide( event )
@@ -121,6 +123,8 @@ function scene:hide( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		composer.removeScene("highscores")
+		-- Stop the music!
+		audio.stop(1)
 	end
 end
 
@@ -130,7 +134,7 @@ function scene:destroy( event )
 
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
-
+	audio.dispose(musicTrack)
 end
 
 
