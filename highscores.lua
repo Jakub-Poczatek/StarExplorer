@@ -46,6 +46,12 @@ local function gotoMenu()
 	composer.gotoScene("menu", {time=800, effect="crossFade"})
 end
 
+local function resetHighscores()
+	scoresTable = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	saveScores()
+	composer.gotoScene("highscores")
+end
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -93,6 +99,11 @@ function scene:create( event )
 	local menuButton = display.newText(sceneGroup, "Menu", display.contentCenterX, 810, native.systemFont, 44)
 	menuButton:setFillColor(0.75, 0.78, 1)
 	menuButton:addEventListener("tap", gotoMenu)
+
+	-- Button for resetting high scores
+	local resetButton = display.newText(sceneGroup, "Reset Highscores", display.contentCenterX, 900, native.systemFont, 44)
+	resetButton:setFillColor(0.8, 0.8, 0.8, 1)
+	resetButton:addEventListener("tap", resetHighscores)
 
 	musicTrack = audio.loadStream("assets/audio/Escape_Looping.wav")
 end
